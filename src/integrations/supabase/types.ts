@@ -14,7 +14,123 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      problems: {
+        Row: {
+          category: Database["public"]["Enums"]["problem_category"]
+          constraints: string[] | null
+          created_at: string | null
+          description: string
+          difficulty: Database["public"]["Enums"]["difficulty_level"]
+          id: string
+          solution_template: string
+          test_cases: Json
+          title: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["problem_category"]
+          constraints?: string[] | null
+          created_at?: string | null
+          description: string
+          difficulty: Database["public"]["Enums"]["difficulty_level"]
+          id?: string
+          solution_template: string
+          test_cases: Json
+          title: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["problem_category"]
+          constraints?: string[] | null
+          created_at?: string | null
+          description?: string
+          difficulty?: Database["public"]["Enums"]["difficulty_level"]
+          id?: string
+          solution_template?: string
+          test_cases?: Json
+          title?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          email: string
+          full_name: string | null
+          id: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          full_name?: string | null
+          id: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          full_name?: string | null
+          id?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      user_progress: {
+        Row: {
+          code: string | null
+          hints_details: Json | null
+          hints_used: number | null
+          id: string
+          last_saved_at: string | null
+          problem_id: string
+          status: Database["public"]["Enums"]["submission_status"] | null
+          submitted_at: string | null
+          test_results: Json | null
+          time_spent: number | null
+          user_id: string
+        }
+        Insert: {
+          code?: string | null
+          hints_details?: Json | null
+          hints_used?: number | null
+          id?: string
+          last_saved_at?: string | null
+          problem_id: string
+          status?: Database["public"]["Enums"]["submission_status"] | null
+          submitted_at?: string | null
+          test_results?: Json | null
+          time_spent?: number | null
+          user_id: string
+        }
+        Update: {
+          code?: string | null
+          hints_details?: Json | null
+          hints_used?: number | null
+          id?: string
+          last_saved_at?: string | null
+          problem_id?: string
+          status?: Database["public"]["Enums"]["submission_status"] | null
+          submitted_at?: string | null
+          test_results?: Json | null
+          time_spent?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_progress_problem_id_fkey"
+            columns: ["problem_id"]
+            isOneToOne: false
+            referencedRelation: "problems"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_progress_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +139,27 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      difficulty_level: "easy" | "medium" | "hard"
+      problem_category:
+        | "array"
+        | "string"
+        | "linked_list"
+        | "tree"
+        | "graph"
+        | "dynamic_programming"
+        | "sorting"
+        | "searching"
+        | "hash_table"
+        | "stack"
+        | "queue"
+        | "heap"
+        | "math"
+        | "bit_manipulation"
+        | "backtracking"
+        | "greedy"
+        | "two_pointers"
+        | "sliding_window"
+      submission_status: "attempted" | "solved" | "in_progress"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +286,29 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      difficulty_level: ["easy", "medium", "hard"],
+      problem_category: [
+        "array",
+        "string",
+        "linked_list",
+        "tree",
+        "graph",
+        "dynamic_programming",
+        "sorting",
+        "searching",
+        "hash_table",
+        "stack",
+        "queue",
+        "heap",
+        "math",
+        "bit_manipulation",
+        "backtracking",
+        "greedy",
+        "two_pointers",
+        "sliding_window",
+      ],
+      submission_status: ["attempted", "solved", "in_progress"],
+    },
   },
 } as const
