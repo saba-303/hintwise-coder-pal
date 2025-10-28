@@ -1,8 +1,19 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Code2, Lightbulb, TrendingUp, Zap } from "lucide-react";
 
 const Index = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        navigate("/problems");
+      }
+    });
+  }, [navigate]);
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -26,18 +37,18 @@ const Index = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link to="/solve">
+            <Link to="/auth">
               <Button
                 size="lg"
                 className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-lg px-8 py-6"
               >
                 <Code2 className="mr-2 h-5 w-5" />
-                Start Solving
+                Get Started
               </Button>
             </Link>
-            <Link to="/dashboard">
+            <Link to="/auth">
               <Button size="lg" variant="outline" className="text-lg px-8 py-6">
-                View Dashboard
+                Sign In
               </Button>
             </Link>
           </div>
