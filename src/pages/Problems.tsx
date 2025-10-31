@@ -151,27 +151,18 @@ const Problems = () => {
 
         {/* Filter */}
         <div className="mb-6">
-          <div className="mb-6">
-  <div className="flex space-x-3 overflow-x-auto pb-2 scrollbar-hide">
-    {categories.map((cat) => (
-      <button
-        key={cat}
-        onClick={() => setSelectedCategory(cat)}
-        className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap border transition-all ${
-          selectedCategory === cat
-            ? "bg-green-600 text-white border-green-600"
-            : "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700"
-        }`}
-      >
-        {cat === "all"
-          ? "All Categories"
-          : cat.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
-      </button>
-    ))}
-  </div>
-</div>
-
-
+          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+            <SelectTrigger className="w-full max-w-xs">
+              <SelectValue placeholder="Filter by category" />
+            </SelectTrigger>
+            <SelectContent>
+              {categories.map((cat) => (
+                <SelectItem key={cat} value={cat}>
+                  {cat === "all" ? "All Categories" : cat.replace(/_/g, " ").toUpperCase()}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Problems Grid */}
