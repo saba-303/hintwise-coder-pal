@@ -227,26 +227,40 @@ const ProblemSolver = () => {
     setOutput("Running code...\n");
     
     try {
-      // Simulate code execution with test cases
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Detect language from code
+      let language = 'python'; // default
       
-      if (problem?.test_cases && problem.test_cases.length > 0) {
-        let results = "Test Results:\n\n";
-        problem.test_cases.forEach((testCase: any, index: number) => {
-          results += `Test Case ${index + 1}:\n`;
-          results += `Input: ${testCase.input}\n`;
-          results += `Expected: ${testCase.output}\n`;
-          results += `Status: Simulated (Run in browser)\n\n`;
-        });
-        setOutput(results);
-      } else {
-        setOutput("Code executed successfully!\n\nNote: Actual execution coming soon.");
+      // Simple detection based on common patterns
+      if (code.includes('public class') || code.includes('public static void main')) {
+        language = 'java';
+      } else if (code.includes('def ') || code.includes('print(')) {
+        language = 'python';
       }
 
-      toast({
-        title: "Code executed",
-        description: "Check the output console below.",
+      // Execute code using the edge function
+      const { data, error } = await supabase.functions.invoke("execute-code", {
+        body: {
+          code: code,
+          language: language,
+        },
       });
+
+      if (error) throw error;
+
+      if (data.error) {
+        setOutput(`Execution Error:\n${data.output || data.error}`);
+        toast({
+          variant: "destructive",
+          title: "Execution error",
+          description: "Check the output console for details.",
+        });
+      } else {
+        setOutput(`${language.toUpperCase()} Code Execution:\n\n${data.output}`);
+        toast({
+          title: "Code executed successfully",
+          description: "Check the output console below.",
+        });
+      }
     } catch (error: any) {
       setOutput(`Error: ${error.message}`);
       toast({
