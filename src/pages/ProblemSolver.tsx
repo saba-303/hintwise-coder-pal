@@ -9,7 +9,6 @@ import { useToast } from "@/hooks/use-toast";
 import { Clock, Lightbulb, Play, Send, ArrowLeft } from "lucide-react";
 
 interface Problem {
-  id: string;
   title: string;
   description: string;
   difficulty: string;
