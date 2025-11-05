@@ -1,0 +1,7 @@
+project_id = "gqakqsgvdydcpleqyusl"
+
+[functions.generate-hint]
+verify_jwt = true
+
+[functions.execute-code]
+verify_jwt = true
