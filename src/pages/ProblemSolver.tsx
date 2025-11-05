@@ -254,7 +254,8 @@ const ProblemSolver = () => {
           description: "Check the output console for details.",
         });
       } else {
-        setOutput(`${language.toUpperCase()} Code Execution:\n\n${data.output}`);
+        // Only show the actual output without prepending language label
+        setOutput(data.output || 'Code executed successfully (no output)');
         toast({
           title: "Code executed successfully",
           description: "Check the output console below.",
